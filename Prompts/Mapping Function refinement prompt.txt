@@ -1,0 +1,20 @@
+Please carefully analyze the policy feedback and provide an improved mapping function to better solve the task. Here are some tips for analyzing the policy feedback:
+
+​If the success rates are consistently near zero, you must rewrite the entire mapping function.
+
+​If the values of a mapping variable remain nearly identical throughout training, it means that the variable failed to effectively capture the task progress dynamics of the agent 
+
+You may consider:
+
+(a) If one of the mapping variables in the current mapping function changes weakly during training and may not effectively quantify task progress, you should analyze its sensitivity and focus on whether the variable is strongly correlated with the task goal?
+(b) If one of the mapping variables has not changed at all during the training process, indicating that the mapping variable cannot reflect the progress of the task. Please redesign a more sensitive alternative variable. requirement: 1. Strong correlation with task objectives 2. It can be decomposed into multi-stage indicators 
+(c) If one of the mapping variables does not significantly contribute to task performance, please analyze its necessity. If there is redundancy, please propose alternative mapping variables or directly eliminate the mapping variable
+
+First, analyze each existing mapping variable using the guidelines above, then write an optimized mapping function.
+
+Function signature: 
+    def mapping_function(self) -> Tuple[List[torch.Tensor], List[bool]]: 
+        # Logic here 
+        return mapping_vars, mapping_directions, mapping_vars_name
+
+The code output should be formatted as a Python code string: "```python ... ```".

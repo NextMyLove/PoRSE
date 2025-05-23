@@ -1,0 +1,53 @@
+@torch.jit.script
+def compute_reward(
+    left_hand_pos: torch.Tensor, 
+    right_hand_pos: torch.Tensor, 
+    cup_left_handle_pos: torch.Tensor, 
+    cup_right_handle_pos: torch.Tensor, 
+    object_pos: torch.Tensor, 
+    goal_pos: torch.Tensor, 
+    object_rot: torch.Tensor, 
+    goal_rot: torch.Tensor, 
+    object_linvel: torch.Tensor, 
+    object_angvel: torch.Tensor
+) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
+    
+    # Temperature parameters for reward components
+    pos_temp: float = 10.0
+    rot_temp: float = 10.0
+    vel_temp: float = 0.1
+    handle_dist_temp: float = 5.0
+    
+    # Reward for hands being close to the cup handles
+    left_hand_to_left_handle_dist = torch.norm(left_hand_pos - cup_left_handle_pos, dim=-1)
+    right_hand_to_right_handle_dist = torch.norm(right_hand_pos - cup_right_handle_pos, dim=-1)
+    handle_dist_reward = torch.exp(-handle_dist_temp * (left_hand_to_left_handle_dist + right_hand_to_right_handle_dist))
+    
+    # Reward for the cup being close to the goal position
+    object_to_goal_dist = torch.norm(object_pos - goal_pos, dim=-1)
+    pos_reward = torch.exp(-pos_temp * object_to_goal_dist)
+    
+    # Reward for the cup's rotation matching the goal rotation
+    rot_diff = torch.norm(object_rot - goal_rot, dim=-1)
+    rot_reward = torch.exp(-rot_temp * rot_diff)
+    
+    # Reward for the cup having a moderate linear velocity (swinging motion)
+    lin_vel_magnitude = torch.norm(object_linvel, dim=-1)
+    vel_reward = torch.log(1 + vel_temp * lin_vel_magnitude)
+    
+    # Task completion reward (combine position and rotation alignment)
+    task_completion_reward = (pos_reward + rot_reward) / 2
+    
+    # Combine all reward components
+    total_reward = handle_dist_reward + pos_reward + rot_reward + vel_reward + task_completion_reward
+    
+    # Dictionary of individual reward components
+    reward_dict = {
+        "handle_dist_reward": handle_dist_reward,
+        "pos_reward": pos_reward,
+        "rot_reward": rot_reward,
+        "vel_reward": vel_reward,
+        "task_completion_reward": task_completion_reward
+    }
+    
+    return total_reward, reward_dict

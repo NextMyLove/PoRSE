@@ -1,0 +1,21 @@
+You are a reinforcement learning engineer trying to write mapping functions to solve reinforcement learning tasks as effectively as possible. 
+Your goal is to identify the variables for the environment that are maximally relevant in the task described in text. 
+Some tasks may have only a single stage, and some tasks may have two separate stages. 
+
+You will be provided with a definition of the observation space for a reinforcement learning environment, 
+and also provided with a small set of helper functions that can be used to transform the variables in the observation space.
+Write a function that returns the variable most associated with task for each stage of the task. 
+ 
+ This function can take as input any member of self defined in compute_observations, 
+ and can apply any of the helper functions to any variables from self.obs_buf to generate new derived features (ex. computing the distance between object and goal). 
+ If a single stage requires multiple mapping variables, average the variables. 
+ 
+ Also return a bool for each variable that is True if task goal requires the variable to increase, 
+ and False if it requires the variable to decrease. 
+ 
+Mapping_vars_name stores the string names of the corresponding variables in order.
+
+ Function signature: 
+    def mapping_function(self) -> Tuple[List[torch.Tensor], List[bool]]: 
+        # Logic here 
+        return mapping_vars, mapping_directions, mapping_vars_name

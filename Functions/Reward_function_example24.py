@@ -1,0 +1,40 @@
+@torch.jit.script
+def compute_reward(
+    franka_grasp_pos: torch.Tensor, 
+    drawer_grasp_pos: torch.Tensor, 
+    cabinet_dof_pos: torch.Tensor, 
+    cabinet_dof_vel: torch.Tensor
+) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
+    # Temperature parameters for reward shaping
+    distance_temp: float = 0.02  # Adjusted to make distance reward more sensitive
+    velocity_temp: float = 0.2   # Reduced to prevent dominance
+    progress_temp: float = 0.5   # Adjusted to provide clearer feedback on door opening
+    time_penalty_temp: float = 0.1  # Increased to encourage faster task completion
+
+    # Distance between the Franka hand and the drawer handle
+    distance = torch.norm(franka_grasp_pos - drawer_grasp_pos, dim=-1)
+    distance_reward = torch.exp(-distance / distance_temp)
+
+    # Velocity of the cabinet door (encouraging movement)
+    velocity_reward = torch.abs(cabinet_dof_vel[:, 3])  # Assuming the 4th DOF is the cabinet door
+    velocity_reward = torch.exp(-velocity_reward / velocity_temp)
+
+    # Progress reward for partially opening the cabinet door
+    progress_reward = torch.clamp(cabinet_dof_pos[:, 3], min=0.0, max=1.0)  # Normalized progress
+    progress_reward = torch.exp(progress_reward / progress_temp)
+
+    # Time penalty to encourage faster task completion
+    time_penalty = torch.ones_like(cabinet_dof_pos[:, 3]) * time_penalty_temp
+
+    # Total reward is a weighted sum of the components
+    total_reward = distance_reward + velocity_reward + progress_reward - time_penalty
+
+    # Individual reward components for debugging
+    reward_dict = {
+        "distance_reward": distance_reward,
+        "velocity_reward": velocity_reward,
+        "progress_reward": progress_reward,
+        "time_penalty": time_penalty
+    }
+
+    return total_reward, reward_dict

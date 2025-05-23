@@ -1,0 +1,33 @@
+    from typing import Tuple, List
+    def mapping_function(self) -> Tuple[List[torch.Tensor], List[bool], List[str]]:
+        # Stage 1: Grasping the cup handles
+        # Measure the distance between the hands and the cup handles
+        left_hand_to_left_handle_dist = self.dist(self.left_hand_pos, self.cup_left_handle_pos)
+        right_hand_to_right_handle_dist = self.dist(self.right_hand_pos, self.cup_right_handle_pos)
+        grasp_dist = (left_hand_to_left_handle_dist + right_hand_to_right_handle_dist) / 2.0
+    
+        # Measure the rotational alignment of the hands with the cup handles
+        left_hand_rot_align = self.rot_dist(self.left_hand_rot, self.cup_left_handle_rot)
+        right_hand_rot_align = self.rot_dist(self.right_hand_rot, self.cup_right_handle_rot)
+        grasp_rot = (left_hand_rot_align + right_hand_rot_align) / 2.0
+    
+        # Combine distance and rotational alignment for Stage 1 mapping
+        grasp_mapping = (grasp_dist + grasp_rot) / 2.0
+        grasp_direction = False  # Mapping requires the combined metric to decrease
+    
+        # Stage 2: Swinging the cup
+        # Measure the angular velocity of the cup
+        swing_angvel_mapping = torch.norm(self.object_angvel, p=2, dim=-1)
+    
+        # Measure the rotational distance between the cup and the goal
+        swing_rot_mapping = self.rot_dist(self.object_rot, self.goal_rot)
+    
+        # Combine angular velocity and rotational distance for Stage 2 mapping
+        swing_mapping = (swing_angvel_mapping + swing_rot_mapping) / 2.0
+        swing_direction = False  # Mapping requires the combined metric to decrease
+    
+        mapping_vars = [grasp_mapping, swing_mapping]
+        mapping_directions = [grasp_direction, swing_direction]
+        mapping_vars_name = ["grasp_mapping", "swing_mapping"]
+    
+        return mapping_vars, mapping_directions, mapping_vars_name
