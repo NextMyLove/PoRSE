@@ -47,27 +47,4 @@ prompts/ LLM prompt templates for reward design and state mapping
 examples/ Sample reward functions and affordance space mappings
 configs/ Baseline training configurations
 
-🔒 Usage Notes
-All materials are provided solely for verification of claims in the submitted paper
 
-The repository will be updated with:
-
-Complete training pipelines
-
-Policy optimization code
-
-LLM interaction modules
-
-Full experiment replicability scripts
-
-📜 Citation
-@article{anonymous2024porse,
-  title={Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring},
-  author={Anonymous},
-  journal={Under Review},
-  year={2024}
-
-📧 Contact
-For inquiries during the review period, please contact the conference submission system.
-
-This repository will be maintained for at least 3 years post-publication.
