@@ -1,6 +1,4 @@
-Here's a professional README file for your anonymous repository:
-
-PoRSE: Policy-grounded Synergy of Reward Shaping and Exploration
+Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring
 
 Anonymous Submission [Paper Under Review]
  Code Release: Post-Acceptance
