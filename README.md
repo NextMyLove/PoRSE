@@ -1,50 +1,69 @@
-Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring
+# Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring
 
-Anonymous Submission [Paper Under Review]
- Code Release: Post-Acceptance
+**Anonymous Submission** | Under Review as a **Poster at ICLR 2026**  
+**Code Release**: Post-Acceptance
 
-This repository contains supporting materials for the paper:  
-"Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring"
+---
 
-⚠️ Current Repository Status
-This interim release contains:
-Environment implementations:
+## 📋 Overview
 
-isaac/: Modified Isaac Gym robotics environments
+This repository contains the supporting materials for the paper:  
+**"Master Skill Learning with Policy-Grounded Synergy of LLM-based Reward Shaping and Exploring"**.
 
-bi_dexterity/: Bi-DexHands bimanual manipulation environments
+The full codebase will be released upon paper acceptance, in accordance with conference submission guidelines.
 
-Prompt examples for LLM interactions
+---
 
-Function code samples (reward/mapping functions)
+## ⚠️ Current Release Status
 
-Model architecture prototypes
+This is an **interim release**. The following components are included:
 
-Full codebase will be released upon paper acceptance per conference submission guidelines.
+*   **Environment Implementations**:
+    *   `isaac/` – Modified Isaac Gym robotics environments.
+    *   `bi_dexterity/` – Bi-DexHands bimanual manipulation environments.
+*   **LLM Interaction Resources**:
+    *   Prompt templates for reward design and state mapping.
+*   **Code Samples**:
+    *   Example reward and mapping functions.
+    *   Model architecture prototypes.
+*   **Configuration Files**:
+    *   Baseline training configurations.
 
-🛠️ Preliminary Setup
-Dependencies (will be finalized in full release):
+---
 
-Python 3.9+
+## 🛠️ Preliminary Setup
 
-PyTorch 2.0+
+### Dependencies
+*(Finalized list will be provided with the full release.)*
+*   Python 3.9+
+*   PyTorch 2.0+
+*   NVIDIA GPU with CUDA 11.7+
 
-NVIDIA GPU with CUDA 11.7
-Environment Installation:
+### Installation
+1.  **For Isaac Gym environments:**
+    ```bash
+    cd isaac && pip install -e .
+    ```
 
-For Isaac Gym environments
+2.  **For Bi-Dexterity environments:**
+    ```bash
+    cd bi_dexterity && pip install -e .
+    ```
 
-cd isaac && pip install -e .
+---
 
-For Bi-Dexterity environments
+## 📁 Repository Structure
 
-cd bi_dexterity && pip install -e .
+```
+├── prompts/       # LLM prompt templates for reward design and state mapping
+├── examples/      # Sample reward functions and affordance space mappings
+└── configs/       # Baseline training configurations
+```
 
-📋 Included Resources
-Directory Contents
+---
 
-prompts/ LLM prompt templates for reward design and state mapping
-examples/ Sample reward functions and affordance space mappings
-configs/ Baseline training configurations
+## 📄 Citation
+Citation details will be updated upon paper acceptance.
 
-
+---
+*This README was last updated in February 2026.*
